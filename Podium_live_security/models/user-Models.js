@@ -14,11 +14,42 @@ const groupHistorySchema = new mongoose.Schema({
         maxlength: 70,
     },
 
+    description: {
+        type: String,
+        trim: true
+    },
+
+
     user: {
         type: ObjectId,
         ref: "User",
         required: true
     },
+
+    email: {
+        type: String,
+        trim: true,
+        required: [true, 'e-mail is required'],
+        unique: true,
+        match: [
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            'Please add a valid email'
+        ]
+    },
+
+    password: {
+        type: String,
+        trim: true,
+        required: [true, 'Password is required'],
+        minlength: [8, 'Password must have at least 8 characters'],
+        validate: {
+            validator: function(password) {
+                return /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            },
+            message: 'Password must contain at least one special character'
+        }
+    },
+
 
 
 
